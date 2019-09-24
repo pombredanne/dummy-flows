@@ -3,6 +3,7 @@ from prefect import Flow, task
 
 import random
 
+
 @task
 def numbers_task():
     return [random.randint(1, 1000)] * 100
@@ -25,4 +26,3 @@ with Flow("Map / Reduce (hey twitter)") as flow:
     reduction = reduce_task(second_map)
 
 flow.run(executor=DaskExecutor("tcp://192.168.1.31:8786"))
-

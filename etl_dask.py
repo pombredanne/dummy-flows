@@ -1,5 +1,4 @@
 from prefect import task
-from prefect.environments.storage import Docker
 
 
 @task
@@ -22,7 +21,15 @@ def load(data):
 
 from prefect import Flow
 
-with Flow("ETL", storage=Docker(registry_url="joshmeek18", image_name="flows")) as flow:
+with Flow("ETL") as flow:
     e = extract()
     t = transform(e)
     l = load(t)
+
+from prefect.engine.executors import DaskExecutor
+
+from dask.distributed import LocalCluster
+cluster = LocalCluster()
+
+executor = DaskExecutor(address=cluster.scheduler.address)
+flow.run(executor=executor)

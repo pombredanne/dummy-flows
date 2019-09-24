@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: prefect-dask-job
+  labels:
+    app: prefect-dask-job
+spec:
+  template:
+    metadata:
+      labels:
+        app: prefect-dask-job
+    spec:
+      containers:
+        - name: flow
+          image: prefect
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/sh", "-c"]
+          args: ['python -c "from prefect.environments import DaskKubernetesEnvironment; DaskKubernetesEnvironment().run_flow()"']
+          env:
+            - name: PREFECT__LOGGING__LEVEL
+              value: "DEBUG"
+            - name: PREFECT__DEBUG
+              value: "true"
+            - name: DASK_DISTRIBUTED__SCHEDULER__WORK_STEALING
+              value: "False"
+            - name: DASK_DISTRIBUTED__SCHEDULER__BLOCKED_HANDLERS
+              value: "['feed', 'run_function']"
+            - name: NEW_VAR
+              value: "NEW_VAR"
+          resources:
+            requests:
+              cpu: "100m"
+            limits:
+              cpu: "100m"
+      restartPolicy: Never

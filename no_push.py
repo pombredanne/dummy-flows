@@ -1,5 +1,4 @@
 from prefect import task
-from prefect.environments.storage import Docker
 
 
 @task
@@ -22,7 +21,9 @@ def load(data):
 
 from prefect import Flow
 
-with Flow("ETL", storage=Docker(registry_url="joshmeek18", image_name="flows")) as flow:
+with Flow("ETL-no-push") as flow:
     e = extract()
     t = transform(e)
     l = load(t)
+
+flow.deploy(project_name="Demo")

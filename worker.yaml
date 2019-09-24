@@ -1,0 +1,25 @@
+kind: Pod
+metadata:
+  labels:
+    app: prefect-dask-worker
+spec:
+  restartPolicy: Never
+  containers:
+  - image: prefect
+    imagePullPolicy: IfNotPresent
+    args: [dask-worker, --no-bokeh, --death-timeout, '60']
+    name: dask-worker
+    env:
+      - name: PREFECT__LOGGING__LEVEL
+        value: "DEBUG"
+      - name: PREFECT__DEBUG
+        value: "true"
+      - name: DASK_DISTRIBUTED__SCHEDULER__BLOCKED_HANDLERS
+        value: "['feed', 'run_function']"
+      - name: NEW_VAR
+        value: "NEW_VAR"
+    resources:
+      requests:
+        cpu: "100m"
+      limits:
+        cpu: "100m"
