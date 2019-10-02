@@ -26,4 +26,4 @@ with Flow("ETL-no-push") as flow:
     t = transform(e)
     l = load(t)
 
-flow.deploy(project_name="Demo")
+# flow.deploy(project_name="Demo")
