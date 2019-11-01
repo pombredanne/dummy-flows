@@ -1,6 +1,13 @@
 from prefect import task
-from prefect.environments.storage import Docker
 from prefect.environments import RemoteEnvironment
+
+
+def starter():
+    print("on_start---@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@---on_start")
+
+
+def exiter():
+    print("on_exit---######################################---on_exit")
 
 
 @task
@@ -24,12 +31,15 @@ def load(data):
 from prefect import Flow
 
 with Flow(
-    "ETL_both",
-    storage=Docker(registry_url="joshmeek18", image_name="flows"),
-    environment=RemoteEnvironment(labels=["dev", "staging"]),
+    "Callbacks", environment=RemoteEnvironment(on_start=starter, on_exit=exiter)
 ) as flow:
     e = extract()
     t = transform(e)
     l = load(t)
 
-flow.deploy(project_name="Labels")
+flow.deploy(
+    project_name="Demo",
+    registry_url="joshmeek18",
+    image_name="flows",
+    prefect_version="environment_callbacks",
+)

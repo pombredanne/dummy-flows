@@ -1,6 +1,6 @@
 from prefect import task
 from prefect.environments.storage import Docker
-from prefect.environments import RemoteEnvironment
+from prefect.environments import FargateTaskEnvironment
 
 
 @task
@@ -23,13 +23,11 @@ def load(data):
 
 from prefect import Flow
 
-with Flow(
-    "ETL_both",
-    storage=Docker(registry_url="joshmeek18", image_name="flows"),
-    environment=RemoteEnvironment(labels=["dev", "staging"]),
-) as flow:
+with Flow("ETL-fte", environment=FargateTaskEnvironment(), storage=Docker(base_image="prefecthq/prefect:latest")) as flow:
     e = extract()
     t = transform(e)
     l = load(t)
 
-flow.deploy(project_name="Labels")
+flow.storage.add_flow(flow)
+flow.storage.build()
+# flow.deploy(project_name="Demo", registry_url="joshmeek18", image_name="flows")
