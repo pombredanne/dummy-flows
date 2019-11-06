@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: my-prefect-job
+  labels:
+    identifier: ""
+spec:
+  template:
+    metadata:
+      labels:
+        identifier: ""
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: flow-container
+        image: ""
+        command: []
+        args: []
+        env:
+          - name: MY_ENV
+            value: foo
+        resources:
+          limits:
+            cpu: "2"
+            memory: 4G
+          requests:
+            cpu: "1"
+            memory: 2G
