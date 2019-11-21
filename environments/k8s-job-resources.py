@@ -24,3 +24,5 @@ flow = Flow(
 # set task dependencies using imperative API
 output_value.set_upstream(get_value, flow=flow)
 output_value.bind(value=get_value, flow=flow)
+
+flow.deploy(project_name="Demo")

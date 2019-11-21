@@ -3,20 +3,12 @@ metadata:
   labels:
     foo: bar
 spec:
-  replicas: 1
   restartPolicy: Never
   containers:
-  - image: joshmeek18/flows:dask-test
+  - image: joshmeek18/flows:qqq
     imagePullPolicy: IfNotPresent
-    args: [dask-worker, --nthreads, '1', --no-bokeh, --memory-limit, 2GB]
+    args: [dask-worker, --no-bokeh, --death-timeout, '60', --resources, 'process=1']
     name: dask-worker
     env:
       - name: EXTRA_PIP_PACKAGES
         value: fastparquet git+https://github.com/dask/distributed
-    resources:
-      limits:
-        cpu: "2"
-        memory: 4G
-      requests:
-        cpu: "1"
-        memory: 2G

@@ -24,12 +24,12 @@ def load(data):
 from prefect import Flow
 
 with Flow(
-    "ETL_both",
+    "ETL",
     storage=Docker(registry_url="joshmeek18", image_name="flows"),
-    environment=RemoteEnvironment(labels=["dev", "staging"]),
+    # environment=RemoteEnvironment(labels=["dev", "staging"]),
 ) as flow:
     e = extract()
     t = transform(e)
     l = load(t)
 
-flow.deploy(project_name="Labels")
+flow.deploy(project_name="Demo")

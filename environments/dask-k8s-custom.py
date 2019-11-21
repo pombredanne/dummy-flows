@@ -17,7 +17,7 @@ flow = Flow(
     "Custom Worker Spec Dask Kubernetes Example",
     environment=DaskKubernetesEnvironment(worker_spec_file="worker_spec.yaml"),
     storage=Docker(
-        registry_url="my_registry", image_name="flows", image_tag="dask-test"
+        registry_url="joshmeek18", image_name="flows", image_tag="qqq", python_dependencies=["kubernetes==10.0.1"]
     ),
 )
 
@@ -25,4 +25,9 @@ flow = Flow(
 output_value.set_upstream(get_value, flow=flow)
 output_value.bind(value=get_value, flow=flow)
 
-flow.run()
+# print(flow.environment._worker_spec)
+
+flow.deploy(project_name="Demo", prefect_version="master")
+# out = flow.save()
+
+# Flow.load()

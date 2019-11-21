@@ -19,10 +19,3 @@ spec:
         env:
           - name: MY_ENV
             value: foo
-        resources:
-          limits:
-            cpu: "2"
-            memory: 4G
-          requests:
-            cpu: "1"
-            memory: 2G

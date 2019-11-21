@@ -16,6 +16,9 @@ def transform(data):
 @task
 def load(data):
     """Print the data to indicate it was received"""
+    import prefect
+    logger = prefect.context.get("logger")
+    logger.info("Here")
     print("Here's your data: {}".format(data))
 
 
@@ -28,8 +31,8 @@ with Flow("ETL") as flow:
 
 from prefect.engine.executors import DaskExecutor
 
-from dask.distributed import LocalCluster
-cluster = LocalCluster()
+# from dask.distributed import LocalCluster
+# cluster = LocalCluster()
 
-executor = DaskExecutor(address=cluster.scheduler.address)
+executor = DaskExecutor(address="localhost:8786")
 flow.run(executor=executor)
